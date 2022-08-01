@@ -8,5 +8,4 @@ DEFAULT_DIMENSIONS = "400x250"
 ROOT = Tk()
 ROOT.geometry(DEFAULT_DIMENSIONS)
 TASK_HELPER = TaskHelper()
-LOADED_TASKS = TASK_HELPER.get_tasks()
-SELECTED_TASK = "Unselected"
+ROOT_FRAME = "Not valid as a string constant."

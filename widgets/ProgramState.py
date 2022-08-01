@@ -1,0 +1,1 @@
+"""Class for storing state of program since window contents are not constant."""

@@ -3,14 +3,14 @@ from tkinter.ttk import *
 
 from widgets.TaskList import *
 from widgets.TaskInfo import *
+from widgets.RootFrame import *
 from globals import *
 
 def main():
+    global ROOT_FRAME
     ROOT.title(WINDOW_NAME)
-    t_list = TaskList()
-    t_list.place(x=0,y=0)
-    t_info = TaskInfo()
-    t_info.place(x=200,y=0)
+    ROOT_FRAME = RootFrame()
+    ROOT_FRAME.place(x=0,y=0)
     # Process: Load Tasks For Taskmaster
     # Generate Widgets
     # Load Widgets
