@@ -6,12 +6,12 @@ class Trigger(Enum):
     #TODO: IMPLEMENT ALL TRIGGERS
 
 class Task:
-    def __init__(self, task_name="Task", task_trigger=Trigger.LOGIN, executable="C:\Windows\System32\calculator.exe"):
-        if not isinstance(task_trigger, Trigger):
+    def __init__(self, name="Task", trigger=Trigger.LOGIN, target="C:\Windows\System32\calculator.exe"):
+        if not isinstance(trigger, Trigger):
             print("TODO: HANDLE INVALID ENUM")
-        self.task_name = task_name
-        self.task_trigger = task_trigger
-        self.executable=executable
+        self.name = name
+        self.trigger = trigger
+        self.target = target
 
     @staticmethod
     def get_task_from_query_output(query_output):

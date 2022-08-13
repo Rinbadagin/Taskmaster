@@ -10,6 +10,7 @@ from widgets.TaskList import TaskList
 class RootFrame(Frame):
     __instance = None
     parent_frame = None
+    selected_task = StringVar(ROOT, "0")
 
     @staticmethod
     def get_instance():
@@ -27,7 +28,7 @@ class RootFrame(Frame):
             raise Exception("This class is a singleton!")
         else:
             RootFrame.__instance = self
-        super(RootFrame, self).__init__(master=ROOT, width="400", height="400")
+        super(RootFrame, self).__init__(master=ROOT, width=DEFAULT_WIDTH_X, height=DEFAULT_HEIGHT_Y)
         self.parent_frame = ParentFrame()
         self.parent_frame.place(x=0,y=0)
 

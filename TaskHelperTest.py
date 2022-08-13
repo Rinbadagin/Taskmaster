@@ -6,7 +6,7 @@ class TaskHelper:
     selected_task = Task()
     def __init__(self):
         print("Running TEST Task Helper, no interaction with actual schtasks")
-        self.loaded_tasks = [Task("Task 1"), Task("Task 3", executable="C:\\demo.exe"), Task(task_name="Different")]
+        self.loaded_tasks = [Task("Task 1"), Task("Task 3", target="C:\\demo.exe"), Task(name="Different")]
 
     def save(self):
         print("TODO: SAVE LOADED TASKS")

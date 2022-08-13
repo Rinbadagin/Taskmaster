@@ -11,6 +11,7 @@ def main():
     ROOT.title(WINDOW_NAME)
     ROOT_FRAME = RootFrame()
     ROOT_FRAME.place(x=0,y=0)
+    ROOT.resizable(False, False)
     # Process: Load Tasks For Taskmaster
     # Generate Widgets
     # Load Widgets
