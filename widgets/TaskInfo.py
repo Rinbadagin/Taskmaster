@@ -45,8 +45,6 @@ class TaskInfo(Frame):
             message += f"Name exceeds maximum length ({NAME_MAXLENGTH} chars)\n"
         if len(target) > TARGET_MAXLENGTH:
             message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"
-        print(trigger)
-        print(trigger in Trigger)
         if not trigger in Trigger:
             message += f"Trigger must be valid\n"
         if not message:
