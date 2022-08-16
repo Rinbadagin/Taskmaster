@@ -8,11 +8,12 @@ class TaskInfo(Frame):
     task_target_entry = None
     task_trigger_variable = None
     task_trigger_entry = None
+
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskInfo, self).__init__(master=root_frame, width="100", height="50")
         self.initialize_form()
-        self.place(anchor="ne",relx=0.95)
+        self.place(anchor="ne", relx=1)
         self.buttons = TaskInfoButtons(root_frame)
 
     def initialize_form(self):
@@ -24,27 +25,49 @@ class TaskInfo(Frame):
         self.task_name_entry.grid(row=1, column=1, sticky=W)
         self.task_name_entry.insert(10, RootFrame.gi().get_selected_task().name)
 
-        #TODO: Add file dialog
+        # TODO: Add file dialog
         Label(master=self, text="Target").grid(row=2, column=0)
-        self.task_target_entry = Entry(master=self, width=64)
+        self.task_target_entry = Entry(master=self, width=48)
         self.task_target_entry.grid(row=2, column=1, sticky=W)
         self.task_target_entry.insert(10, RootFrame.gi().get_selected_task().target)
 
         Label(master=self, text="Trigger").grid(row=3, column=0)
         self.task_trigger_variable = StringVar(value=RootFrame.gi().get_selected_task().trigger.name)
-        self.task_trigger_entry = OptionMenu(self, self.task_trigger_variable, self.task_trigger_variable.get(), *[i.name for i in Trigger])
+        self.task_trigger_entry = OptionMenu(self, self.task_trigger_variable, self.task_trigger_variable.get(),
+                                             *[i.name for i in Trigger])
         self.task_trigger_entry.grid(row=3, column=1, sticky=W)
 
+    def validate_form(self):
+        name, trigger, target = (
+            self.task_name_entry.get(), Trigger[self.task_trigger_variable.get()], self.task_target_entry.get())
+        message = ""
+        if len(name) > NAME_MAXLENGTH:
+            message += f"Name exceeds maximum length ({NAME_MAXLENGTH} chars)\n"
+        if len(target) > TARGET_MAXLENGTH:
+            message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"
+        print(trigger)
+        print(trigger in Trigger)
+        if not trigger in Trigger:
+            message += f"Trigger must be valid\n"
+        if not message:
+            return True
+        from tkinter import messagebox
+        messagebox.showerror("Error", message)
+        return False
+
     def get_form_task(self):
-        #Return content of entry values.
+        if not self.validate_form():
+            raise Exception
+        # Return content of entry values.
         return Task(name=self.task_name_entry.get(),
                     trigger=Trigger[self.task_trigger_variable.get()],
                     target=self.task_target_entry.get())
+
 
 class TaskInfoButtons(Frame):
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskInfoButtons, self).__init__(master=root_frame, width="200", height="50")
-        Button(master=self, text="Save", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=0, padx=40)
+        Button(master=self, text="Save Task", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=0, padx=40)
         Button(master=self, text="Delete", command=lambda: RootFrame.gi().button_delete_task()).grid(row=2, column=1)
-        self.place(anchor="se",relx=1,rely=1)
+        self.place(anchor="se", relx=1, rely=1)

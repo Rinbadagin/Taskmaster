@@ -11,3 +11,6 @@ ROOT = Tk()
 ROOT.geometry(DEFAULT_DIMENSIONS)
 TASK_HELPER = TaskHelper()
 ROOT_FRAME = "Not valid as a string constant."
+INPUT_SANITIZATION = True
+NAME_MAXLENGTH = 15
+TARGET_MAXLENGTH = 255

@@ -11,6 +11,7 @@ class RootFrame(Frame):
     __instance = None
     parent_frame = None
     selected_task_stringvar = StringVar(ROOT, "0")
+    scroll_index = 0
 
     @staticmethod
     def get_instance():
