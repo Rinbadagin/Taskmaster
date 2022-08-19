@@ -27,9 +27,10 @@ class TaskInfo(Frame):
 
         # TODO: Add file dialog
         Label(master=self, text="Target").grid(row=2, column=0)
-        self.task_target_entry = Entry(master=self, width=48)
+        self.task_target_entry = Entry(master=self, width=40)
         self.task_target_entry.grid(row=2, column=1, sticky=W)
         self.task_target_entry.insert(10, RootFrame.gi().get_selected_task().target)
+        self.task_target_browse = Button(master=self, text="Browse", command=lambda: RootFrame.gi().button_browse()).grid(row=2, column=2, sticky=W)
 
         Label(master=self, text="Trigger").grid(row=3, column=0)
         self.task_trigger_variable = StringVar(value=RootFrame.gi().get_selected_task().trigger.name)
@@ -38,19 +39,23 @@ class TaskInfo(Frame):
         self.task_trigger_entry.grid(row=3, column=1, sticky=W)
 
     def validate_form(self):
+        from os.path import exists
         name, trigger, target = (
             self.task_name_entry.get(), Trigger[self.task_trigger_variable.get()], self.task_target_entry.get())
         message = ""
-        if len(name) > NAME_MAXLENGTH:
-            message += f"Name exceeds maximum length ({NAME_MAXLENGTH} chars)\n"
-        if len(target) > TARGET_MAXLENGTH:
-            message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"
-        if not trigger in Trigger:
-            message += f"Trigger must be valid\n"
-        if not message:
-            return True
+        if len(TASK_HELPER.loaded_tasks)>0:
+            if len(target) > TARGET_MAXLENGTH:
+                message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"
+            if not trigger in Trigger:
+                message += f"Trigger must be valid\n"
+            if not exists(target) and target != "":
+                message += f"Target file does not exist/cannot be read by Taskmaster"
+            if not message:
+                return True
+        else:
+            message += f"There are no tasks to save"
         from tkinter import messagebox
-        messagebox.showerror("Error", message)
+        messagebox.showerror("Error", "Task has not been saved. Here's why:\n"+message)
         return False
 
     def get_form_task(self):

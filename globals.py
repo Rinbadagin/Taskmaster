@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from TaskHelperTest import *
+from TaskHelper import *
 
 WINDOW_NAME = "Taskmaster"
 SCHTASKS_FOLDER = f"\\${WINDOW_NAME}\\"
@@ -9,7 +9,7 @@ DEFAULT_HEIGHT_Y = "400"
 DEFAULT_DIMENSIONS = f'{DEFAULT_WIDTH_X}x{DEFAULT_HEIGHT_Y}'
 ROOT = Tk()
 ROOT.geometry(DEFAULT_DIMENSIONS)
-TASK_HELPER = TaskHelper()
+TASK_HELPER = TaskHelperImpl()
 ROOT_FRAME = "Not valid as a string constant."
 INPUT_SANITIZATION = True
 NAME_MAXLENGTH = 15

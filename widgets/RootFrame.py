@@ -39,9 +39,12 @@ class RootFrame(Frame):
         self.parent_frame.place(x=0, y=0)
 
     def button_save(self):
-        self.set_selected_task(self.parent_frame.t_info.get_form_task())
-        TASK_HELPER.save()
-        self.update_gui()
+        try:
+            self.set_selected_task(self.parent_frame.t_info.get_form_task())
+            TASK_HELPER.save()
+            self.update_gui()
+        except Exception:
+            print("Invalid task entered in TaskInfo")
 
     def button_new_task(self, task):
         TASK_HELPER.new_task(task)
@@ -49,12 +52,25 @@ class RootFrame(Frame):
         self.update_gui()
 
     def button_delete_task(self):
-        sel_index = int(self.selected_task_stringvar.get())
-        tsk_index = TASK_HELPER.loaded_tasks.index(self.get_selected_task())
-        TASK_HELPER.delete_task(self.get_selected_task())
-        if sel_index >= tsk_index and sel_index > 0:
-            self.selected_task_stringvar.set(str(sel_index-1))
-        self.update_gui()
+        try:
+            sel_index = int(self.selected_task_stringvar.get())
+            tsk_index = TASK_HELPER.loaded_tasks.index(self.get_selected_task())
+            TASK_HELPER.delete_task(self.get_selected_task())
+            if sel_index >= tsk_index and sel_index > 0:
+                self.selected_task_stringvar.set(str(sel_index-1))
+            self.update_gui()
+        except ValueError:
+            from tkinter import messagebox
+            messagebox.showerror("Error", "There are no tasks to delete")
+
+    def button_browse(self):
+        from tkinter import filedialog
+        filename = filedialog.askopenfilename(
+            title='Select Target',
+            initialdir='/',
+            filetypes=(('Executable Files (.exe)', '*.exe'),('Script Files (.bat)', '*.bat'),('All Files (*.*)', '*.*')))
+        self.parent_frame.t_info.task_target_entry.delete(0, END)
+        self.parent_frame.t_info.task_target_entry.insert(0, filename)
 
     def get_tasks(self):
         return TASK_HELPER.get_tasks()
