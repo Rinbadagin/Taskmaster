@@ -1,5 +1,6 @@
 from Task import *
 from TaskHelperTest import *
+import subprocess
 
 
 class TaskHelperImpl(TaskHelper):
@@ -10,10 +11,15 @@ class TaskHelperImpl(TaskHelper):
     def __init__(self):
         print("Running Task Helper, interaction with actual schtasks")
         self.loaded_tasks = []
+        self.get_tasks()
 
     def log(self, *content):
         """Logs content with information specifying it comes from the task helper"""
         print("(TASK HELPER [prod]): ", *content)
+
+    def run_command_with_output(self, command):
+        self.log("Running command: "+command)
+        return subprocess.check_output(command.split(" "))
 
     def save(self):
         """Saves loaded tasks"""
@@ -36,6 +42,7 @@ class TaskHelperImpl(TaskHelper):
     def get_tasks(self):
         """Returns loaded tasks."""
         self.log("TODO: RETURN SAVED TASKS")
+        self.log(self.run_command_with_output("schtasks /query /tn \"/task master\"/"))
         return self.loaded_tasks
 
     def get_task_by_index(self, index):
