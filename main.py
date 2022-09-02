@@ -7,6 +7,7 @@ from widgets.RootFrame import *
 from globals import *
 
 def main():
+    """Creates frame and runs the Tkinter main loop. Entrypoint for program."""
     global ROOT_FRAME
     ROOT.title(WINDOW_NAME)
     ROOT_FRAME = RootFrame()

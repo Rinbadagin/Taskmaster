@@ -4,6 +4,7 @@ from globals import *
 
 
 class TaskInfo(Frame):
+    """Right frame in window. Provides an interface to enter task info."""
     task_name_entry = None
     task_target_entry = None
     task_trigger_variable = None
@@ -20,18 +21,20 @@ class TaskInfo(Frame):
         from widgets.RootFrame import RootFrame
         Label(master=self, text="Task Info").grid(row=0, column=0)
 
+        #Name input & label
         Label(master=self, text="Name").grid(row=1, column=0)
         self.task_name_entry = Entry(master=self, width=15)
         self.task_name_entry.grid(row=1, column=1, sticky=W)
         self.task_name_entry.insert(10, RootFrame.gi().get_selected_task().name)
 
-        # TODO: Add file dialog
+        #Target input & label
         Label(master=self, text="Target").grid(row=2, column=0)
         self.task_target_entry = Entry(master=self, width=40)
         self.task_target_entry.grid(row=2, column=1, sticky=W)
         self.task_target_entry.insert(10, RootFrame.gi().get_selected_task().target)
         self.task_target_browse = Button(master=self, text="Browse", command=lambda: RootFrame.gi().button_browse()).grid(row=2, column=2, sticky=W)
 
+        #Trigger input and label
         Label(master=self, text="Trigger").grid(row=3, column=0)
         self.task_trigger_variable = StringVar(value=RootFrame.gi().get_selected_task().trigger.name)
         self.task_trigger_entry = OptionMenu(self, self.task_trigger_variable, self.task_trigger_variable.get(),
@@ -39,6 +42,8 @@ class TaskInfo(Frame):
         self.task_trigger_entry.grid(row=3, column=1, sticky=W)
 
     def validate_form(self):
+        """Validates the content in the input fields, raising an error message
+        With relevant information if the validation fails."""
         from os.path import exists
         name, trigger, target = (
             self.task_name_entry.get(), Trigger[self.task_trigger_variable.get()], self.task_target_entry.get())
@@ -59,6 +64,8 @@ class TaskInfo(Frame):
         return False
 
     def get_form_task(self):
+        """Returns the task entered in the input fields, raising an exception if
+        Their content is an invalid task"""
         if not self.validate_form():
             raise Exception
         # Return content of entry values.
@@ -68,6 +75,7 @@ class TaskInfo(Frame):
 
 
 class TaskInfoButtons(Frame):
+    """Compartmentalised class for the task info buttons (bottom right)"""
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskInfoButtons, self).__init__(master=root_frame, width="200", height="50")

@@ -2,11 +2,14 @@ from enum import Enum
 
 
 class Trigger(Enum):
+    """Enum for task triggers in schtasks."""
     NONE = "None"
     LOGIN = "On login"
     #TODO: IMPLEMENT ALL TRIGGERS
 
 class Task:
+    """Task abstraction for the wrapper to deal with. Will be constructed from
+    GUI input and SchTasks output"""
     def __init__(self, name="New Task", trigger=Trigger.NONE, target=""):
         if not isinstance(trigger, Trigger):
             print("TODO: HANDLE INVALID ENUM")

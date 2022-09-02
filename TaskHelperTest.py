@@ -2,6 +2,8 @@ from Task import *
 
 
 class TaskHelper:
+    """Test task helper. Should never be used in production, only for testing the gui.
+    Does not interact with schtasks, but keeps track of tasks in memory."""
     loaded_tasks = []
     def __init__(self):
         print("Running TEST Task Helper, no interaction with actual schtasks")

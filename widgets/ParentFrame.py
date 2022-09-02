@@ -6,6 +6,9 @@ from widgets.TaskList import TaskList
 
 
 class ParentFrame(Frame):
+    """Child frame of rootframe, is parent of all other window widgets.
+    Should not hold any stateful information as is often destroyed and recreated
+    To mimic a dynamic GUI"""
     t_info = None
     t_list = None
     def __init__(self):

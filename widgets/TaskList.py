@@ -4,6 +4,7 @@ from globals import *
 
 
 class TaskList(Frame):
+    """Left frame in window. Provides an interface to select/view loaded tasks"""
     button_array = []
 
     def __init__(self, root_frame):
@@ -22,32 +23,38 @@ class TaskList(Frame):
         self.buttons = TaskListButtons(root_frame)
 
     def get_selected_task(self):
+        """Returns selected task in GUI"""
         from widgets.RootFrame import RootFrame
         RootFrame.gi().selected_task_stringvar.set(RootFrame.gi().selected_task_stringvar.get())
         return TASK_HELPER.loaded_tasks[int(RootFrame.gi().selected_task_stringvar.get())]
 
     def update_selected_task(self):
+        """Sets selected task (variable) to selected task in GUI,
+        then updates GUI to reflect this change"""
         from widgets.RootFrame import RootFrame
         TASK_HELPER.selected_task_stringvar = self.get_selected_task()
         RootFrame.gi().update_gui()
 
     def up(self):
+        """Scrolls up by 1."""
         from widgets.RootFrame import RootFrame
         if RootFrame.gi().scroll_index > 0:
             RootFrame.gi().scroll_index -= 1
             RootFrame.gi().update_gui()
 
     def down(self):
+        """Scrolls down by 1."""
         from widgets.RootFrame import RootFrame
         if RootFrame.gi().scroll_index < len(TASK_HELPER.loaded_tasks)-1:
             RootFrame.gi().scroll_index += 1
             RootFrame.gi().update_gui()
 
     def convert_string(self, input_string):
-        #Converts a string into a shortened version for display in a thin list
+        """Shortens input strings to fit in task list column"""
         return input_string if len(input_string)<NAME_MAXLENGTH else input_string[0:NAME_MAXLENGTH-3]+"..."
 
 class TaskListButtons(Frame):
+    """Compartmentalised class for the task list buttons (bottom left)"""
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskListButtons, self).__init__(master=root_frame, width="100", height="50")

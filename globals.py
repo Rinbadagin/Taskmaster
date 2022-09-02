@@ -2,6 +2,9 @@ from tkinter import *
 from tkinter.ttk import *
 from TaskHelper import *
 
+"""Globals file for important variables used by all/many modules.
+Tends to initialize but not populate them."""
+
 WINDOW_NAME = "Taskmaster"
 SCHTASKS_FOLDER = f"\\${WINDOW_NAME}\\"
 DEFAULT_WIDTH_X = "600"
