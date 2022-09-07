@@ -3,8 +3,9 @@ from enum import Enum
 
 class Trigger(Enum):
     """Enum for task triggers in schtasks."""
-    NONE = "None"
-    LOGIN = "On login"
+    NONE = "Monthly"
+    ONSTART = "At system start up"
+    ONLOGON = "At logon time"
     #TODO: IMPLEMENT ALL TRIGGERS
 
 class Task:

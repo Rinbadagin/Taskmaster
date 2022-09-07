@@ -49,11 +49,13 @@ class RootFrame(Frame):
         """Abstracted save method for a button. Means save code is implemented here
         And not in the creation of the widget, which would be awkward."""
         try:
-            self.set_selected_task(self.parent_frame.t_info.get_form_task())
+            if len(TASK_HELPER.loaded_tasks):
+                self.set_selected_task(self.parent_frame.t_info.get_form_task())
             TASK_HELPER.save()
             self.update_gui()
-        except Exception:
+        except Exception as e:
             print("Invalid task entered in TaskInfo")
+            print(e)
 
     def button_new_task(self, task):
         """Abstracted new task method for a button."""
@@ -75,16 +77,23 @@ class RootFrame(Frame):
             from tkinter import messagebox
             messagebox.showerror("Error", "There are no tasks to delete")
 
-    def button_browse(self):
+    def button_browse(self, initialdir):
         """Makes browse popup with filetypes for .exe .bat and .*
         Currently used to select target file"""
         from tkinter import filedialog
         filename = filedialog.askopenfilename(
             title='Select Target',
-            initialdir='/',
+            initialdir="\\".join(initialdir.split("\\")[:-1]),
             filetypes=(('Executable Files (.exe)', '*.exe'),('Script Files (.bat)', '*.bat'),('All Files (*.*)', '*.*')))
-        self.parent_frame.t_info.task_target_entry.delete(0, END)
-        self.parent_frame.t_info.task_target_entry.insert(0, filename)
+        if filename:
+            self.parent_frame.t_info.task_target_entry.delete(0, END)
+            self.parent_frame.t_info.task_target_entry.insert(0, filename)
+
+    def button_reload(self):
+        self.get_tasks()
+        self.selected_task_stringvar.set(0)
+        self.update_gui()
+        TASK_HELPER.deleted_tasks=[]
 
     def get_tasks(self):
         """Task Helper abstraction: gets tasks. .-."""

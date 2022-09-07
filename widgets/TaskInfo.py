@@ -23,7 +23,7 @@ class TaskInfo(Frame):
 
         #Name input & label
         Label(master=self, text="Name").grid(row=1, column=0)
-        self.task_name_entry = Entry(master=self, width=15)
+        self.task_name_entry = Entry(master=self, width=40)
         self.task_name_entry.grid(row=1, column=1, sticky=W)
         self.task_name_entry.insert(10, RootFrame.gi().get_selected_task().name)
 
@@ -32,7 +32,7 @@ class TaskInfo(Frame):
         self.task_target_entry = Entry(master=self, width=40)
         self.task_target_entry.grid(row=2, column=1, sticky=W)
         self.task_target_entry.insert(10, RootFrame.gi().get_selected_task().target)
-        self.task_target_browse = Button(master=self, text="Browse", command=lambda: RootFrame.gi().button_browse()).grid(row=2, column=2, sticky=W)
+        self.task_target_browse = Button(master=self, text="Browse", command=lambda: RootFrame.gi().button_browse(self.task_target_entry.get())).grid(row=2, column=2, sticky=W)
 
         #Trigger input and label
         Label(master=self, text="Trigger").grid(row=3, column=0)
@@ -48,7 +48,10 @@ class TaskInfo(Frame):
         name, trigger, target = (
             self.task_name_entry.get(), Trigger[self.task_trigger_variable.get()], self.task_target_entry.get())
         message = ""
+        print(f"{len(TASK_HELPER.loaded_tasks)} {len(TASK_HELPER.deleted_tasks)}")
         if len(TASK_HELPER.loaded_tasks)>0:
+            if len(name) > 236:
+                message += f"Task name exceeds maximum length (236 chars)\n"
             if len(target) > TARGET_MAXLENGTH:
                 message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"
             if not trigger in Trigger:
@@ -57,6 +60,8 @@ class TaskInfo(Frame):
                 message += f"Target file does not exist/cannot be read by Taskmaster"
             if not message:
                 return True
+        elif len(TASK_HELPER.deleted_tasks)>0:
+            return True
         else:
             message += f"There are no tasks to save"
         from tkinter import messagebox
@@ -79,6 +84,6 @@ class TaskInfoButtons(Frame):
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskInfoButtons, self).__init__(master=root_frame, width="200", height="50")
-        Button(master=self, text="Save Task", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=0, padx=40)
+        Button(master=self, text="Save Changes", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=0, padx=40)
         Button(master=self, text="Delete", command=lambda: RootFrame.gi().button_delete_task()).grid(row=2, column=1)
         self.place(anchor="se", relx=1, rely=1)

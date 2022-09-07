@@ -29,8 +29,11 @@ def main():
     # Let them interact
     ROOT.mainloop()
 
-if is_admin() and __name__ == "__main__":
-    print("User is an admin.")
+if RUN_AS_ADMIN and __name__ == "__main__":
+    if is_admin():
+        print("User is an admin.")
+        main()
+    else:
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+elif __name__ == "__main__":
     main()
-else:
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)

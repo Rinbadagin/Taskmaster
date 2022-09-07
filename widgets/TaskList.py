@@ -58,7 +58,7 @@ class TaskListButtons(Frame):
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskListButtons, self).__init__(master=root_frame, width="100", height="50")
-        Button(master=self, text="Reload", command=lambda: RootFrame.gi().get_tasks(), width=17).grid(
+        Button(master=self, text="Reload From DB", command=lambda: RootFrame.gi().button_reload(), width=17).grid(
             row=len(TASK_HELPER.loaded_tasks) + 1, column=0)
         Button(master=self, text="New", command=lambda: RootFrame.gi().button_new_task(Task()), width=17).grid(
             row=len(TASK_HELPER.loaded_tasks) + 1, column=1)
