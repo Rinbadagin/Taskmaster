@@ -50,7 +50,7 @@ class TaskInfo(Frame):
         message = ""
         print(f"{len(TASK_HELPER.loaded_tasks)} {len(TASK_HELPER.deleted_tasks)}")
         if len(TASK_HELPER.loaded_tasks)>0:
-            if len(name) > 236:
+            if len(name) > SCHTASKS_MAXIMUM_NAME_LENGTH:
                 message += f"Task name exceeds maximum length (236 chars)\n"
             if len(target) > TARGET_MAXLENGTH:
                 message += f"Target exceeds maximum length ({TARGET_MAXLENGTH} chars)\n"

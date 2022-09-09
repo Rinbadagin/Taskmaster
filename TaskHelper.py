@@ -28,7 +28,7 @@ class TaskHelperImpl(TaskHelper):
         self.log("TODO: SAVE LOADED TASKS")
         for task in self.deleted_tasks:
             try:
-                sample_command = f"schtasks /f /delete /tn \"\\task master\\{task.name}\""
+                sample_command = f"schtasks /f /delete /tn \"\\task master\\{task.hash_inclusive_name}\""
                 task_delete_output = str(self.run_command_with_output(sample_command, shell=True))
                 self.log(task_delete_output)
             except subprocess.CalledProcessError as e:
@@ -45,7 +45,7 @@ class TaskHelperImpl(TaskHelper):
                 sample_command = sample_command.replace("taskschedule", "MONTHLY")
             else:
                 sample_command = sample_command.replace("taskschedule", task.trigger.name)
-            sample_command = sample_command.replace("taskname",f"\"\\task master\\{task.name}\"")\
+            sample_command = sample_command.replace("taskname",f"\"\\task master\\{task.hash_inclusive_name}\"")\
                 .replace("taskrun",task.target if task.target else '/')
             task_create_output = str(self.run_command_with_output(sample_command, shell=True)).replace(":\\", ";\\").replace("\\\\", "\\")
             self.log(task_create_output)
@@ -80,8 +80,7 @@ class TaskHelperImpl(TaskHelper):
         temporary_tasks = []
         for task_dict in task_query_output:
             if task_dict.get("TaskName"):
-                temporary_task = Task()
-                temporary_task.name=task_dict.get("TaskName").replace("\\task master\\", "").replace("\\\\", "")
+                temporary_task = Task(name=task_dict.get("TaskName").replace("\\task master\\", "").replace("\\\\", ""), new = False)
                 temporary_task.target=task_dict.get("Task To Run").replace(";\\",":\\").replace(";/",":/")
                 temporary_task.trigger=Trigger(task_dict.get("Schedule Type"))
                 temporary_tasks.append(temporary_task)

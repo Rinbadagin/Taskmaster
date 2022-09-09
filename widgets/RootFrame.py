@@ -52,10 +52,12 @@ class RootFrame(Frame):
             if len(TASK_HELPER.loaded_tasks):
                 self.set_selected_task(self.parent_frame.t_info.get_form_task())
             TASK_HELPER.save()
+            self.button_reload()
             self.update_gui()
         except Exception as e:
             print("Invalid task entered in TaskInfo")
-            print(e)
+            from traceback import print_exc
+            print_exc()
 
     def button_new_task(self, task):
         """Abstracted new task method for a button."""
