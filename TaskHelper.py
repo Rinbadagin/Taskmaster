@@ -35,6 +35,16 @@ class TaskHelperImpl(TaskHelper):
                 print(e)
                 continue
         for task in self.loaded_tasks:
+            print(f'Task: name {task.name} h_inc {task.hash_inclusive_name} in_db {task.name_in_database} trigger {task.trigger} target {task.target}')
+            if not task.name_in_database == task.hash_inclusive_name:
+                try:
+                    sample_command = f"schtasks /f /delete /tn \"\\task master\\{task.name_in_database}\""
+                    task_delete_output = str(self.run_command_with_output(sample_command, shell=True))
+                    self.log(task_delete_output)
+                except subprocess.CalledProcessError as e:
+                    print(e)
+                    continue
+        for task in self.loaded_tasks:
             sample_command = f"schtasks /f /create /tn taskname /tr taskrun /sc taskschedule"
             if task.trigger is Trigger.NONE:
                 """Literal garbage. There's no way to make a disabled task directly from the command line
