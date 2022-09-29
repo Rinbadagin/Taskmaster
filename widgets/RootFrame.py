@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import *
+from tkinter.messagebox import askyesno
 from tkinter.ttk import *
 from globals import *
 from widgets.ParentFrame import ParentFrame
@@ -95,7 +96,18 @@ class RootFrame(Frame):
         self.get_tasks()
         self.selected_task_stringvar.set(0)
         self.update_gui()
-        TASK_HELPER.deleted_tasks=[]
+        TASK_HELPER.deleted_tasks = []
+
+    def button_trigger_task(self):
+        from os import system
+        from tkinter.messagebox import askyesno
+        if askyesno("Trigger Confirmation", f"Are you sure you would like to run {self.parent_frame.t_info.get_form_task().target} early?"):
+        #Opens new cmd windows and runs command, while keeping cmd window after task completes
+        #for debugging
+            """system(f"start /wait cmd /k "
+               f"\"echo Running {self.parent_frame.t_info.get_form_task().target}"
+               f" as TaskMaster triggered & {self.parent_frame.t_info.get_form_task().target}\"")"""
+            system(f"{self.parent_frame.t_info.get_form_task().target}")
 
     def get_tasks(self):
         """Task Helper abstraction: gets tasks. .-."""

@@ -90,7 +90,9 @@ class TaskInfoButtons(Frame):
     def __init__(self, root_frame):
         from widgets.RootFrame import RootFrame
         super(TaskInfoButtons, self).__init__(master=root_frame, width="200", height="50")
-        Button(master=self, text="Save Changes", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=0,
+        Button(master=self, text="Save Changes", command=lambda: RootFrame.gi().button_save()).grid(row=2, column=1,
                                                                                                     padx=40)
-        Button(master=self, text="Delete", command=lambda: RootFrame.gi().button_delete_task()).grid(row=2, column=1)
+        Button(master=self, text="Delete", command=lambda: RootFrame.gi().button_delete_task()).grid(row=2, column=2)
+
+        Button(master=self, text="Trigger", command=lambda: RootFrame.gi().button_trigger_task()).grid(row=2, column=0)
         self.place(anchor="se", relx=1, rely=1)
